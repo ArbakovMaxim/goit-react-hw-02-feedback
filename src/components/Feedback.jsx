@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Wrapper } from './ui/Wrapper.styled';
+import { Section } from './Section/Section';
 
 class Feedback extends Component {
   state = {
@@ -34,17 +35,21 @@ class Feedback extends Component {
 
     return (
       <Wrapper>
-        <FeedbackOptions
-          options={options}
-          honLeaveFeedback={this.onLeaveFeedback}
-        />
-        <Statistics
-          total={this.countTotalFeedback()}
-          good={good}
-          neutral={neutral}
-          bad={bad}
-          positivePercentage={this.countPositiveFeedbackPercentage()}
-        />
+        <Section title={'Please leave feedback'}>
+          <FeedbackOptions
+            options={options}
+            honLeaveFeedback={this.onLeaveFeedback}
+          />
+        </Section>
+        <Section title={'Statistics'}>
+          <Statistics
+            total={this.countTotalFeedback()}
+            good={good}
+            neutral={neutral}
+            bad={bad}
+            positivePercentage={this.countPositiveFeedbackPercentage()}
+          />
+        </Section>
       </Wrapper>
     );
   }
