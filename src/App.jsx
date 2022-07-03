@@ -1,4 +1,4 @@
-import Feedback from 'components/Feedback';
+import { Feedback } from 'components/Feedback';
 import { Container } from './components/ui/Container.styled';
 
 export const App = () => {

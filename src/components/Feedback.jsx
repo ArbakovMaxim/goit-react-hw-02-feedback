@@ -3,12 +3,19 @@ import { FeedbackOptions } from './FeedbackOptions/FeedbackOptions';
 import { Statistics } from './Statistics/Statistics';
 import { Wrapper } from './ui/Wrapper.styled';
 import { Section } from './Section/Section';
+import { Notification } from './Notification/Notification';
 
-class Feedback extends Component {
+export class Feedback extends Component {
   state = {
     good: 0,
     neutral: 0,
     bad: 0,
+  };
+
+  onLeaveFeedback = state => {
+    this.setState(prevState => ({
+      [state]: prevState[state] + 1,
+    }));
   };
 
   countTotalFeedback() {
@@ -18,16 +25,8 @@ class Feedback extends Component {
   }
 
   countPositiveFeedbackPercentage() {
-    const totalCount = this.countTotalFeedback();
-
-    return Math.round((this.state.good * 100) / totalCount);
+    return Math.round((this.state.good / this.countTotalFeedback()) * 100);
   }
-
-  onLeaveFeedback = state => {
-    this.setState(prevState => ({
-      [state]: prevState[state] + 1,
-    }));
-  };
 
   render() {
     const options = Object.keys(this.state);
@@ -38,21 +37,23 @@ class Feedback extends Component {
         <Section title={'Please leave feedback'}>
           <FeedbackOptions
             options={options}
-            honLeaveFeedback={this.onLeaveFeedback}
+            onLeaveFeedback={this.onLeaveFeedback}
           />
         </Section>
         <Section title={'Statistics'}>
-          <Statistics
-            total={this.countTotalFeedback()}
-            good={good}
-            neutral={neutral}
-            bad={bad}
-            positivePercentage={this.countPositiveFeedbackPercentage()}
-          />
+          {this.countTotalFeedback() ? (
+            <Statistics
+              total={this.countTotalFeedback()}
+              good={good}
+              neutral={neutral}
+              bad={bad}
+              positivePercentage={this.countPositiveFeedbackPercentage()}
+            />
+          ) : (
+            <Notification message={'There is no feedback'} />
+          )}
         </Section>
       </Wrapper>
     );
   }
 }
-
-export default Feedback;
